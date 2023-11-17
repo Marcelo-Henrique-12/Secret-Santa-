@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\NovoParticipanteController;
+use App\Http\Controllers\SorteioController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -26,3 +27,4 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 
 Route::resource('novoparticipante', NovoParticipanteController::class);
+Route::get('/sorteio', [SorteioController::class, 'index']);

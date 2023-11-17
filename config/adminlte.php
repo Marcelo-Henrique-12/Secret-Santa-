@@ -314,29 +314,27 @@ return [
         ['header' => 'Sorteios'],
         [
             'text'        => 'Novo sorteio',
-            'url'         => 'admin/pages',
-            'icon'        => 'far fa-fw fa-file',
-            'label'       => 4,
-            'label_color' => 'success',
+            'url'         => '/sorteio',
+            'icon' => 'fas fa-gift',    
         ],
-        [
-            'text'        => 'Sorteios Realizados',
-            'url'         => 'admin/pages',
-            'icon'        => 'far fa-fw fa-file',
-            'label'       => 4,
-            'label_color' => 'success',
-        ],
+        // [
+        //     'text'        => 'Sorteios Realizados',
+        //     'url'         => 'admin/pages',
+        //     'icon'        => 'far fa-fw fa-file',
+        //     'label'       => 4,
+        //     'label_color' => 'success',
+        // ],
         ['header' => 'Cadastro de participantes'],
         [
             'text' => 'Novo participante',
             'url'  => 'novoparticipante',
             'icon' => 'fas fa-fw fa-plus',
         ],
-        [
-            'text' => 'Participantes cadastrados',
-            'url'  => 'admin/participantes',
-            'icon' => 'fas fa-fw fa-user',
-        ],
+        // [
+        //     'text' => 'Participantes cadastrados',
+        //     'url'  => 'admin/participantes',
+        //     'icon' => 'fas fa-fw fa-user',
+        // ],
             // [
             //     'text'    => 'multilevel',
             //     'icon'    => 'fas fa-fw fa-share',
