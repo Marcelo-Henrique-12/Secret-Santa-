@@ -27,4 +27,4 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 
 Route::resource('novoparticipante', NovoParticipanteController::class);
-Route::get('/sorteio', [SorteioController::class, 'index']);
+Route::resource('sorteio', SorteioController::class);

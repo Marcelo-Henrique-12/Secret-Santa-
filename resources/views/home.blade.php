@@ -1,13 +1,15 @@
 @extends('adminlte::page')
 
-@section('title', 'Dashboard')
+@section('title', 'Bem vindo')
 
 @section('content_header')
-    <h1>Dashboard</h1>
+    <h1>Bem vindo</h1>
 @stop
 
 @section('content')
-    <p>Welcome to this beautiful admin panel.</p>
+    <p>Cadastre os participantes do amigo oculto e os sorteie.</p>
+    <br>
+    <p>Envio de quem foi o amigo oculto de cada um por email!</p>
 @stop
 
 @section('css')
