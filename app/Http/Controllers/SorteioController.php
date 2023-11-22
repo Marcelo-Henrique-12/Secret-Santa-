@@ -17,6 +17,7 @@ class SorteioController extends Controller
         $participantes = Participante::select('id', 'nome', 'email')->get();
         $sorteio = Sorteio::select('id', 'participante_id', 'amigo_secreto_id')->get();
 
+
         return view('sorteio.index', [
             'participantes' => $participantes,
             'sorteio' => $sorteio
@@ -51,40 +52,38 @@ class SorteioController extends Controller
      */
     private function realizarSorteio(Collection $participantes)
     {
-        do {
-            // Embaralha os participantes
-            $participantesEmbaralhados = $participantes->shuffle();
+        // Obtém os IDs dos participantes que já foram sorteados
+        $participantesSorteados = Sorteio::pluck('amigo_secreto_id');
 
-            // Cria os registros na tabela 'sorteios'
-            foreach ($participantes as $index => $participante) {
-                // Obtém um índice aleatório dentro do intervalo do count dos participantes
-                $amigoSecretoIndex = $participantesEmbaralhados->keys()->random();
+        // Filtra os participantes que ainda não foram sorteados
+        $participantesDisponiveis = $participantes->reject(function ($participante) use ($participantesSorteados) {
+            return $participantesSorteados->contains($participante->id);
+        });
 
-                // Obtém o participante correspondente ao índice aleatório
-                $amigoSecreto = $participantesEmbaralhados->get($amigoSecretoIndex);
+        // Embaralha os participantes disponíveis
+        $participantesEmbaralhados = $participantesDisponiveis->shuffle();
 
-                // Verifica se ao menos uma pessoa se tirou a si mesma ou a mesma pessoa foi tirada duas vezes
-                if ($participante->id == $amigoSecreto->id || $participante->jaFoiTirado()) {
-                    // Reinicia o sorteio
-                    continue 2;
-                }
+        // Cria os registros na tabela 'sorteios'
+        foreach ($participantes as $index => $participante) {
+            // Obtém um participante disponível aleatório
+            $amigoSecreto = $participantesEmbaralhados->random();
 
-                // Cria o registro na tabela 'sorteios'
-                $sorteio = new Sorteio([
-                    'participante_id' => $participante->id,
-                    'amigo_secreto_id' => $amigoSecreto->id,
-                ]);
-
-                $sorteio->save();
-
-                // Marca o participante como já tendo sido tirado para evitar ser sorteado novamente
-                $participante->marcarComoTirado();
+            while($amigoSecreto->id === $participante->id){
+                $amigoSecreto = $participantesEmbaralhados->random();
             }
 
-            // Se chegou até aqui, o sorteio foi concluído com sucesso
-            return true;
+            $sorteio = new Sorteio([
+                'participante_id' => $participante->id,
+                'amigo_secreto_id' => $amigoSecreto->id,
+            ]);
 
-        } while (true); // Repete o sorteio até que um sorteio bem-sucedido seja alcançado
+            $sorteio->save();
+
+            // Remove o participante sorteado da lista de participantes disponíveis
+            $participantesEmbaralhados = $participantesEmbaralhados->reject(function ($p) use ($amigoSecreto) {
+                return $p->id === $amigoSecreto->id;
+            });
+        }
     }
 
     /**

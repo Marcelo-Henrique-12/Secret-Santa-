@@ -22,9 +22,30 @@
     </form>
 
 
+    {{-- Sorteios Realizados --}}
+    
+    <div class="lista">
+        <h3>Campanhas</h3>
+        <p>Sorteios realizados</p>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Campanha</th>
+                    <th scope="col">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+                
+            </tbody>
+        </table>
+
+
+    </div>
     {{-- LISTAGEM DE PARTICIPANTES --}}
 
-    <div class="listausuarios">
+    <div class="lista">
         <h3>Participantes</h3>
         <p>Participantes Cadastrados</p>
         <table class="table">
@@ -54,7 +75,7 @@
 @section('css')
     <link rel="stylesheet" href="/css/admin_custom.css">
     <style>
-        .listausuarios {
+        .lista {
             margin-top: 100px;
         }
     </style>
