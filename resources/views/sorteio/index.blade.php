@@ -18,12 +18,22 @@
 
     <form method="POST" action="{{ route('sorteio.store') }}">
         @csrf
+        <div class="form-group col-md-6">
+            <label for="ano">Ano da Campanha</label>
+            <input type="text" class="form-control @error('ano') is-invalid @enderror" id="ano" placeholder="Ex. 2023"
+                name="ano">
+            <small id="nomeHelp" class="form-text text-muted">Digite o ano que será realizado o sorteio</small>
+
+            @error('ano')
+                <div class="text-danger">{{ $message }}</div>
+            @enderror
+        </div>
         <button type="submit" class="btn btn-primary" role="button">Sortear nomes</button>
     </form>
 
 
     {{-- Sorteios Realizados --}}
-    
+
     <div class="lista">
         <h3>Campanhas</h3>
         <p>Sorteios realizados</p>
@@ -33,16 +43,42 @@
                     <th scope="col">#</th>
                     <th scope="col">Campanha</th>
                     <th scope="col">Ações</th>
+                    <th scope="col"></th> {{-- Nova coluna para o botão de e-mail --}}
                 </tr>
             </thead>
             <tbody>
-                
-                
+                @php
+                    $cont = 1;
+                @endphp
+                @foreach ($sorteiosPorAno as $sorteio)
+                    <tr>
+                        <th scope="row">{{ $cont }}</th>
+                        <td>{{ $sorteio->ano_sorteio }}</td>
+                        <td>
+                            <div class="btn-group" role="group" aria-label="Ações">
+                                <form method="post" action="{{ route('sorteio.destroy', $sorteio->ano_sorteio) }}">
+                                    @csrf
+                                    @method('delete')
+                                    <button type="submit" class="btn btn-danger" title="Excluir Sorteios do Ano">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </form>
+                                <button type="button" class="btn btn-info" style="margin-left:5px;"title="Enviar E-mail">
+                                    <i class="fas fa-envelope"></i>
+                                </button>
+                            </div>
+                        </td>
+
+
+                    </tr>
+                    @php
+                        $cont++;
+                    @endphp
+                @endforeach
             </tbody>
         </table>
-
-
     </div>
+
     {{-- LISTAGEM DE PARTICIPANTES --}}
 
     <div class="lista">

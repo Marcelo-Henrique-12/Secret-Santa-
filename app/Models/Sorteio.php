@@ -14,5 +14,6 @@ class Sorteio extends Model
     protected $fillable = [
         'participante_id',
         'amigo_secreto_id',
+        'ano_sorteio'
     ];
 }

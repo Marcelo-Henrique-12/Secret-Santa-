@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Participante;
 use App\Models\Sorteio;
+use Illuminate\Contracts\Cache\Store;
 use Illuminate\Support\Collection;
+use App\Http\Requests\StoreSorteioRequest;
 
 class SorteioController extends Controller
 {
@@ -15,20 +17,27 @@ class SorteioController extends Controller
     public function index()
     {
         $participantes = Participante::select('id', 'nome', 'email')->get();
-        $sorteio = Sorteio::select('id', 'participante_id', 'amigo_secreto_id')->get();
-
+        $sorteiosPorAno = Sorteio::select('id', 'ano_sorteio')->distinct()->get();
 
         return view('sorteio.index', [
             'participantes' => $participantes,
-            'sorteio' => $sorteio
+            'sorteiosPorAno' => $sorteiosPorAno,
         ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store()
-    {
+    public function store(StoreSorteioRequest $request)
+    {   
+        
+        // Verifica se já existe um sorteio para o ano fornecido
+        $sorteioExistente = Sorteio::where('ano_sorteio', $request->ano)->exists();
+
+        if ($sorteioExistente) {
+            return redirect()->back()->with('error', 'Já foi realizado um sorteio para o ano informado.');
+        }
+
         // Obtém os participantes da tabela 'participantes'
         $participantes = Participante::select('id', 'nome', 'email')->get();
 
@@ -38,7 +47,7 @@ class SorteioController extends Controller
         }
 
         // Realiza o sorteio
-        $resultado = $this->realizarSorteio($participantes);
+        $resultado = $this->realizarSorteio($participantes, $request->ano);
 
         if ($resultado) {
             return redirect()->route('sorteio.index')->with('success', 'Sorteio realizado com sucesso!');
@@ -50,9 +59,10 @@ class SorteioController extends Controller
     /**
      * Função para realizar o sorteio.
      */
-    private function realizarSorteio(Collection $participantes)
-    {
-        // Obtém os IDs dos participantes que já foram sorteados
+    private function realizarSorteio(Collection $participantes, $ano)
+    {   
+    
+        // Obtém os IDs dos participantes que já foram sorteados    
         $participantesSorteados = Sorteio::pluck('amigo_secreto_id');
 
         // Filtra os participantes que ainda não foram sorteados
@@ -68,13 +78,14 @@ class SorteioController extends Controller
             // Obtém um participante disponível aleatório
             $amigoSecreto = $participantesEmbaralhados->random();
 
-            while($amigoSecreto->id === $participante->id){
+            while ($amigoSecreto->id === $participante->id) {
                 $amigoSecreto = $participantesEmbaralhados->random();
             }
 
             $sorteio = new Sorteio([
                 'participante_id' => $participante->id,
                 'amigo_secreto_id' => $amigoSecreto->id,
+                'ano_sorteio' => $ano
             ]);
 
             $sorteio->save();
@@ -85,6 +96,16 @@ class SorteioController extends Controller
             });
         }
     }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $ano)
+    {
+        Sorteio::where('ano_sorteio', $ano)->delete();
+        return redirect()->route('sorteio.index')->with('success', 'Sorteios do ano ' . $ano . ' excluídos com sucesso!');
+    }
+
 
     /**
      * Display the specified resource.
@@ -113,8 +134,5 @@ class SorteioController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-        //
-    }
+   
 }
