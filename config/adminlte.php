@@ -313,17 +313,15 @@ return [
         ],
         ['header' => 'Sorteios'],
         [
-            'text'        => 'Novo sorteio',
-            'url'         => '/sorteio',
+            'text'        => 'Sorteios Realizados',
+            'url'         => 'sorteio   ',
             'icon' => 'fas fa-gift',    
         ],
-        // [
-        //     'text'        => 'Sorteios Realizados',
-        //     'url'         => 'admin/pages',
-        //     'icon'        => 'far fa-fw fa-file',
-        //     'label'       => 4,
-        //     'label_color' => 'success',
-        // ],
+        [
+            'text'        => 'Novo Sorteio',
+            'url'         => 'sorteio/create',
+            'icon'        => 'fas fa-ticket-alt',
+        ],
         ['header' => 'Cadastro de participantes'],
         [
             'text' => 'Novo participante',
