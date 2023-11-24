@@ -63,9 +63,13 @@
                                         <i class="fas fa-trash-alt"></i>
                                     </button>
                                 </form>
-                                <button type="button" class="btn btn-info" style="margin-left:5px;"title="Enviar E-mail">
-                                    <i class="fas fa-envelope"></i>
-                                </button>
+                                <form method="POST" action="{{ route('sorteio.email', $sorteio->ano_sorteio) }}">
+                                    @csrf
+                                    <button type="submit" class="btn btn-info" style="margin-left:5px;"title="Enviar E-mail">
+                                        <i class="fas fa-envelope"></i>
+                                    </button>
+                                </form>
+                               
                             </div>
                         </td>
 

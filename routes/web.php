@@ -28,3 +28,4 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::resource('novoparticipante', NovoParticipanteController::class);
 Route::resource('sorteio', SorteioController::class);
+Route::post('/sorteioemail/{id}', [SorteioController::class, 'mailto'])->name('sorteio.email');

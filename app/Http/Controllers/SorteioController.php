@@ -8,6 +8,8 @@ use App\Models\Sorteio;
 use Illuminate\Contracts\Cache\Store;
 use Illuminate\Support\Collection;
 use App\Http\Requests\StoreSorteioRequest;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SorteioEmail;
 
 class SorteioController extends Controller
 {
@@ -29,8 +31,8 @@ class SorteioController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(StoreSorteioRequest $request)
-    {   
-        
+    {
+
         // Verifica se já existe um sorteio para o ano fornecido
         $sorteioExistente = Sorteio::where('ano_sorteio', $request->ano)->exists();
 
@@ -60,8 +62,8 @@ class SorteioController extends Controller
      * Função para realizar o sorteio.
      */
     private function realizarSorteio(Collection $participantes, $ano)
-    {   
-    
+    {
+
         // Obtém os IDs dos participantes que já foram sorteados    
         $participantesSorteados = Sorteio::pluck('amigo_secreto_id');
 
@@ -90,6 +92,10 @@ class SorteioController extends Controller
 
             $sorteio->save();
 
+            // Enviar e-mail para o participante
+            $amigoSecreto = Participante::find($amigoSecreto->id);
+            Mail::to($participante->email)->send(new SorteioEmail($participante, $amigoSecreto));
+
             // Remove o participante sorteado da lista de participantes disponíveis
             $participantesEmbaralhados = $participantesEmbaralhados->reject(function ($p) use ($amigoSecreto) {
                 return $p->id === $amigoSecreto->id;
@@ -104,6 +110,25 @@ class SorteioController extends Controller
     {
         Sorteio::where('ano_sorteio', $ano)->delete();
         return redirect()->route('sorteio.index')->with('success', 'Sorteios do ano ' . $ano . ' excluídos com sucesso!');
+    }
+
+
+    public function mailto(string $ano)
+    {   
+        $participantes = Participante::select('id', 'nome', 'email')->get();
+        $sorteiosdoAno = Sorteio::where('ano_sorteio', $ano)->get();
+
+        foreach ($participantes as $participante) {
+            
+            // Enviar e-mail para o participante
+            $sorteio = Sorteio::where('ano_sorteio', $ano)->where('participante_id', $participante->id,)->first();
+            $amigoSecreto = $sorteio->amigo_secreto_id;
+            $amigoSecreto = Participante::find($amigoSecreto);
+            Mail::to($participante->email)->send(new SorteioEmail($participante, $amigoSecreto));
+
+        }
+
+        return redirect()->route('sorteio.index')->with('success', 'Emails do sorteio do ano ' . $ano . ' reenviados com sucesso!');
     }
 
 
@@ -134,5 +159,4 @@ class SorteioController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-   
 }
