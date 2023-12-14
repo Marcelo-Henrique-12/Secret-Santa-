@@ -10,6 +10,8 @@ use Illuminate\Support\Collection;
 use App\Http\Requests\StoreSorteioRequest;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\SorteioEmail;
+use App\Models\Sorteado;
+use Illuminate\Support\Facades\DB;
 
 class SorteioController extends Controller
 {
@@ -19,11 +21,11 @@ class SorteioController extends Controller
     public function index()
     {
         $participantes = Participante::select('id', 'nome', 'email')->get();
-        $sorteiosPorAno = Sorteio::selectRaw('ano_sorteio, COUNT(id) as quantidade')->groupBy('ano_sorteio')->get();
+        $sorteados = Sorteado::selectRaw('sorteio_id, COUNT(id) as quantidade')->groupBy('sorteio_id')->get();
 
         return view('sorteio.index', [
             'participantes' => $participantes,
-            'sorteiosPorAno' => $sorteiosPorAno,
+            'sorteados' => $sorteados,
         ]);
     }
 
@@ -32,132 +34,102 @@ class SorteioController extends Controller
      */
     public function store(StoreSorteioRequest $request)
     {
-        // Verifica se já existe um sorteio para o ano fornecido
-        $sorteioExistente = Sorteio::where('ano_sorteio', $request->ano)->exists();
-
-        if ($sorteioExistente) {
-            return redirect()->back()->with('error', 'Já foi realizado um sorteio para o ano informado.');
-        }
-
         $participantesSelecionados = explode(',', $request->participantes_selecionados);
 
-        // Filtra os participantes da tabela 'participantes' com base nos IDs selecionados
         $participantesSelecionados = Participante::whereIn('id', $participantesSelecionados)->get();
 
-        // Garante que há pelo menos dois participantes para fazer o sorteio
         if ($participantesSelecionados->count() < 2) {
             return redirect()->back()->with('error', 'Não há participantes suficientes para fazer o sorteio.');
         }
 
-        // Realiza o sorteio
-        $resultado = $this->realizarSorteio($participantesSelecionados, $request->ano);
+        
+        DB::transaction(function () use ($request, $participantesSelecionados) {
+            $dados = $request->validated();
+            $sorteio = Sorteio::create($dados);
 
-        if ($resultado) {
-            return redirect()->route('sorteio.index')->with('success', 'Sorteio realizado com sucesso!');
-        } else {
-            return redirect()->back()->with('error', 'Não foi possível realizar o sorteio.');
-        }
-    }
+            $participantesEmbaralhados = $participantesSelecionados->shuffle();
 
-    /**
-     * Função para realizar o sorteio.
-     */
-    private function realizarSorteio(Collection $participantes, $ano)
-    {
-        // Verifica se os participantes já foram sorteados no mesmo ano
-        $participantesSorteadosAno = session()->get("participantes_sorteados_$ano", collect());
+            if ($participantesEmbaralhados->isNotEmpty()) {
+                foreach ($participantesSelecionados as $participante) {
+                    // Garante que o participante não tire a si mesmo
+                    $amigoSecreto = $participantesEmbaralhados->reject(function ($amigo) use ($participante) {
+                        return $amigo->id === $participante->id;
+                    })->first();
 
-        // Filtra os participantes que ainda não foram sorteados
-        $participantesDisponiveis = $participantes->reject(function ($participante) use ($participantesSorteadosAno) {
-            return $participantesSorteadosAno->contains($participante->id);
+                    if ($amigoSecreto) {
+                        // Verificar se já existe um registro com o mesmo sorteio_id e amigo_secreto_id
+                        $registroExistente = Sorteado::where('sorteio_id', $sorteio->id)
+                            ->where('amigo_secreto_id', $amigoSecreto->id)
+                            ->exists();
+
+                        if (!$registroExistente) {
+                            $sorteados = new Sorteado([
+                                'participante_id' => $participante->id,
+                                'amigo_secreto_id' => $amigoSecreto->id,
+                                'sorteio_id' => $sorteio->id
+                            ]);
+
+                            $sorteados->save();
+
+                            // Enviar e-mail para o participante
+                            Mail::to($participante->email)->send(new SorteioEmail($participante, $amigoSecreto));
+
+                            // Remover o amigo secreto da lista para evitar repetição
+                            $participantesEmbaralhados = $participantesEmbaralhados->reject(function ($amigo) use ($amigoSecreto) {
+                                return $amigo->id === $amigoSecreto->id;
+                            });
+                        }
+                    }
+                }
+            } else {
+                return redirect()->back()->with('error', 'Não há participantes suficientes para fazer o sorteio.');
+            }
         });
 
-        // Verifica se há pelo menos dois participantes disponíveis para fazer o sorteio
-        if ($participantesDisponiveis->count() < 2) {
-            return redirect()->back()->with('error', 'Não há participantes suficientes para fazer o sorteio.');
-        }
-
-        // Embaralha os participantes disponíveis
-        $participantesEmbaralhados = $participantesDisponiveis->shuffle();
-
-        // Verifica se a coleção não está vazia antes de tentar acessar itens
-        if ($participantesEmbaralhados->isNotEmpty()) {
-            // Cria os registros na tabela 'sorteios'
-            foreach ($participantes as $index => $participante) {
-                // Obtém um participante disponível aleatório
-                $amigoSecreto = $participantesEmbaralhados->random();
-
-                while ($amigoSecreto->id === $participante->id) {
-                    $amigoSecreto = $participantesEmbaralhados->random();
-                }
-
-                $sorteio = new Sorteio([
-                    'participante_id' => $participante->id,
-                    'amigo_secreto_id' => $amigoSecreto->id,
-                    'ano_sorteio' => $ano
-                ]);
-
-                $sorteio->save();
-
-                // Adiciona o participante sorteado à lista de participantes sorteados
-                $participantesSorteadosAno->push($participante->id);
-
-                // Enviar e-mail para o participante
-                $amigoSecreto = Participante::find($amigoSecreto->id);
-                Mail::to($participante->email)->send(new SorteioEmail($participante, $amigoSecreto));
-
-                // Remove o participante sorteado da lista de participantes disponíveis
-                $participantesEmbaralhados = $participantesEmbaralhados->reject(function ($p) use ($amigoSecreto) {
-                    return $p->id === $amigoSecreto->id;
-                });
-            }
-
-            // Armazena a lista de participantes sorteados na sessão
-            session()->put("participantes_sorteados_$ano", $participantesSorteadosAno->toArray());
-        } else {
-            return redirect()->back()->with('error', 'Não há participantes suficientes para fazer o sorteio.');
-        }
-
-        // Retorno adicionado para indicar que o sorteio foi bem-sucedido
-        return true;
+        return redirect()->route('sorteio.index')->with('success', 'Sorteio realizado com sucesso!');
     }
+
+
+
+
     public function create()
     {
         $participantes = Participante::select('id', 'nome', 'email')->get();
-        $sorteiosPorAno = Sorteio::selectRaw('ano_sorteio, COUNT(id) as quantidade')->groupBy('ano_sorteio')->get();
 
         return view('sorteio.create', [
-            'participantes' => $participantes,
-            'sorteiosPorAno' => $sorteiosPorAno,
+            'participantes' => $participantes
         ]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $ano)
+    public function destroy($sorteio_id)
     {
-        Sorteio::where('ano_sorteio', $ano)->delete();
-        return redirect()->route('sorteio.index')->with('success', 'Sorteios do ano ' . $ano . ' excluídos com sucesso!');
+        Sorteado::where('sorteio_id', $sorteio_id)->delete();
+        Sorteio::where('id', $sorteio_id)->delete();
+        return redirect()->route('sorteio.index')->with('success', 'Sorteio excluído com sucesso!');
     }
 
     /**
      * Enviar e-mails para os participantes do sorteio de um determinado ano.
      */
-    public function mailto(string $ano)
+    public function mailto($sorteio_id)
     {
-        $participantes = Participante::select('id', 'nome', 'email')->get();
-        $sorteiosdoAno = Sorteio::where('ano_sorteio', $ano)->get();
+        $sorteados = Sorteado::where('sorteio_id', $sorteio_id)->get();
 
-        foreach ($participantes as $participante) {
+        $sorteio = Sorteio::where('id', $sorteio_id)->first();
+
+        foreach ($sorteados as $sorteado) {
+
             // Enviar e-mail para o participante
-            $sorteio = Sorteio::where('ano_sorteio', $ano)->where('participante_id', $participante->id)->first();
-            $amigoSecreto = $sorteio->amigo_secreto_id;
-            $amigoSecreto = Participante::find($amigoSecreto);
+            $participante = Participante::where('id', $sorteado->participante_id)->first();
+            $amigoSecreto = Participante::where('id', $sorteado->amigo_secreto_id)->first();
+
             Mail::to($participante->email)->send(new SorteioEmail($participante, $amigoSecreto));
         }
 
-        return redirect()->route('sorteio.index')->with('success', 'Emails do sorteio do ano ' . $ano . ' reenviados com sucesso!');
+        return redirect()->route('sorteio.index')->with('success', 'Emails do sorteio ' . $sorteio->nome . ' reenviados com sucesso!');
     }
 
     /**

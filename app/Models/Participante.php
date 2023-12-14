@@ -12,24 +12,9 @@ class Participante extends Model
 
     protected $fillable = ['nome', 'email'];
 
-    /**
-     * Verifica se o participante já foi sorteado.
-     */
-    public function jaFoiTirado()
+    public function sorteado()
     {
-        return Sorteio::where('participante_id', $this->id)->exists();
+        return $this->hasMany(Sorteado::class);
     }
 
-    /**
-     * Marca o participante como já tendo sido tirado.
-     */
-    public function marcarComoTirado()
-    {
-        // Adapte conforme necessário para a lógica do seu aplicativo
-        // Por exemplo, você pode querer registrar os sorteios em uma tabela 'sorteios'
-        Sorteio::create([
-            'participante_id' => $this->id,
-            'amigo_secreto_id' => $this->id,
-        ]);
-    }
 }

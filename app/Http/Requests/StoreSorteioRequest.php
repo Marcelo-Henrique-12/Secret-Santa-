@@ -22,17 +22,17 @@ class StoreSorteioRequest extends FormRequest
     public function rules()
     {
         return [
-            'ano' => 'required|max:4|min:4'
+            'nome' => 'required|max:30|',
+            'descricao'=> 'max:100'
         ];
     }
 
     public function messages()
     {
         return [
-            'ano.required' => 'O ano é obrigatório',
-            'ano.max' => 'Digite 4 digitos, exemplo 2023',
-            'ano.min' => 'Digite 4 digitos, exemplo 2023'
-    
+            'nome.required' => 'O nome do sorteio é obrigatório',
+            'nome.max' => 'Digite no máximo 30 dígitos',
+            'descricao.max'=>'Digite no máximo 100 dígitos'
         ];
     }
 }

@@ -22,32 +22,34 @@
 
     {{-- Sorteios Realizados --}}
     <div class="lista">
-        <h3>Campanhas</h3>
+        <h3>Sorteios</h3>
         <p>Sorteios realizados</p>
         <table class="table">
             <thead>
                 <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Nome do Sorteio</th>
                     <th scope="col">Quantidade de sorteios realizados</th>
-                    <th scope="col">Ano da realização</th>
                     <th scope="col">Ações</th>
                     <th scope="col"></th> {{-- Nova coluna para o botão de e-mail --}}
                 </tr>
             </thead>
             <tbody>
-                @foreach ($sorteiosPorAno as $sorteio)
+                @foreach ($sorteados as $sorteado)
                     <tr>
-                        <td>{{ $sorteio->quantidade }}</td>
-                        <td>{{ $sorteio->ano_sorteio }}</td>
+                        <td>{{ $sorteado->sorteio_id }}</td>
+                        <td>{{ $sorteado->sorteio->nome }}</td>
+                        <td>{{ $sorteado->quantidade }}</td>
                         <td>
                             <div class="btn-group" role="group" aria-label="Ações">
-                                <form method="POST" action="{{ route('sorteio.email', $sorteio->ano_sorteio) }}">
+                                <form method="POST" action="{{ route('sorteio.email', $sorteado->sorteio_id) }}">
                                     @csrf
                                     <button type="submit" class="btn btn-info" title="Enviar E-mail">
                                         <i class="fas fa-envelope"></i>
                                     </button>
                                 </form>
                                 <a href="#" type="button" class="btn btn-danger" data-toggle="modal"
-                                    data-target="#modal-default{{ $sorteio->ano_sorteio }}" title="Excluir"
+                                    data-target="#modal-default{{ $sorteado->sorteio_id }}" title="Excluir"
                                     style="margin-left: 5px">
                                     <i class="fas fa-trash-alt"></i>
                                 </a>
@@ -55,7 +57,7 @@
                         </td>
 
                         {{-- DELETE MODAL --}}
-                        <div class="modal fade" id="modal-default{{ $sorteio->ano_sorteio }}" style="display: none;"
+                        <div class="modal fade" id="modal-default{{ $sorteado->sorteio_id }}" style="display: none;"
                             aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
@@ -70,7 +72,7 @@
                                     </div>
                                     <div class="modal-footer justify-content-between">
                                         <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-                                        <form method="post" action="{{ route('sorteio.destroy', $sorteio->ano_sorteio) }}">
+                                        <form method="post" action="{{ route('sorteio.destroy', $sorteado->sorteio_id) }}">
                                             @method('delete')
                                             @csrf
                                             <input type="hidden" name="rota" value="{{ Route::currentRouteName() }}">
@@ -87,29 +89,6 @@
         </table>
     </div>
 
-    {{-- LISTAGEM DE PARTICIPANTES --}}
-    <div class="lista">
-        <h3>Participantes</h3>
-        <p>Participantes Cadastrados</p>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Nome</th>
-                    <th scope="col">email</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($participantes as $participante)
-                    <tr>
-                        <th scope="row">{{ $participante->id }}</th>
-                        <td>{{ $participante->nome }}</td>
-                        <td>{{ $participante->email }}</td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
 @stop
 
 @section('css')

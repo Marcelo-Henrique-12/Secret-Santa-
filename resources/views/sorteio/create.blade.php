@@ -18,25 +18,34 @@
     <form method="POST" action="{{ route('sorteio.store') }}">
         @csrf
         <div class="form-group col-md-6">
-            <label for="ano">Ano da Campanha</label>
-            <input type="text" class="form-control @error('ano') is-invalid @enderror" id="ano" placeholder="Ex. 2023"
-                name="ano">
-            <small id="nomeHelp" class="form-text text-muted">Digite o ano que será realizado o sorteio</small>
+            <label for="nome">Nome do sorteio</label>
+            <input type="text" class="form-control @error('nome') is-invalid @enderror" id="nome" placeholder="Nome do sorteio"
+                name="nome">
+            <small id="nomeHelp" class="form-text text-muted">Digite o nome do sorteio que será realizado</small>
 
-            @error('ano')
+            @error('nomeSorteio')
                 <div class="text-danger">{{ $message }}</div>
             @enderror
         </div>
 
         <div class="form-group">
-            <label for="search">Pesquisar por nome:</label>
-            <div class="input-group">
-                <input type="text" class="form-control" id="search" placeholder="Digite o nome">
-            </div>
+            <label for="descricao">Descricao do sorteio</label>
+            <input type="text" class="form-control @error('descricao') is-invalid @enderror" id="descricao" placeholder="Digite uma descricao para o sorteio"
+                name="descricao">
+            <small id="descricaoHelp" class="form-text text-muted">Digite o nome do sorteio que será realizado</small>
+
+            @error('descricao')
+                <div class="text-danger">{{ $message }}</div>
+            @enderror
         </div>
+
+
 
         <div class="form-group">
             <label for="participantes">Participantes disponíveis</label>
+            <div class="input-group">
+                <input type="text" class="form-control" id="search" placeholder="Pesquise o nome">
+            </div>
             <ul class="list-group" id="participantes-list">
                 @foreach ($participantes as $participante)
                     <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -51,7 +60,6 @@
         <div class="form-group">
             <label for="selected-participantes">Participantes selecionados</label>
             <ul class="list-group" id="selected-participantes">
-                {{-- Os participantes selecionados serão adicionados aqui dinamicamente --}}
             </ul>
         </div>
 

@@ -13,12 +13,9 @@ return new class extends Migration
     {
         Schema::create('sorteios', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('participante_id');
-            $table->unsignedBigInteger('amigo_secreto_id');
+            $table->string('nome');
+            $table->string('descricao');
             $table->timestamps();
-
-            $table->foreign('participante_id')->references('id')->on('participantes');
-            $table->foreign('amigo_secreto_id')->references('id')->on('participantes');
         });
     }
 

@@ -12,8 +12,12 @@ class Sorteio extends Model
     protected $table = 'sorteios';
 
     protected $fillable = [
-        'participante_id',
-        'amigo_secreto_id',
-        'ano_sorteio'
+        'nome',
+        'descricao'
     ];
+
+    public function sorteado()
+    {
+        return $this->belongsTo(Sorteado::class);
+    }
 }
