@@ -42,7 +42,7 @@ class SorteioController extends Controller
             return redirect()->back()->with('error', 'Não há participantes suficientes para fazer o sorteio.');
         }
 
-        
+
         DB::transaction(function () use ($request, $participantesSelecionados) {
             $dados = $request->validated();
             $sorteio = Sorteio::create($dados);

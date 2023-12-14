@@ -4,6 +4,7 @@
 
 @section('content_header')
     <h1>Sortear nomes</h1>
+
 @stop
 
 @section('content')
