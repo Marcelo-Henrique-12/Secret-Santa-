@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'title' => 'AdminLTE 3',
+    'title' => 'Amigo oculto',
     'title_prefix' => '',
     'title_postfix' => '',
 
@@ -63,8 +63,8 @@ return [
     |
     */
 
-    'logo' => '<b>Amigo </b>Oculto',
-    'logo_img' => 'assets/images/presente.png',
+    'logo' => '<b>Amigo </b>Secreto',
+    'logo_img' => 'assets/images/presente(1).png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
@@ -148,8 +148,8 @@ return [
     |
     */
 
-    'layout_topnav' => null,
-    'layout_boxed' => null,
+    'layout_topnav' => true,
+    'layout_boxed' => false,
     'layout_fixed_sidebar' => null,
     'layout_fixed_navbar' => null,
     'layout_fixed_footer' => null,
@@ -166,14 +166,12 @@ return [
     | https://github.com/jeroennoten/Laravel-AdminLTE/wiki/Layout-and-Styling-Configuration
     |
     */
-
-    'classes_auth_card' => 'card-outline card-primary',
+    'classes_auth_card' => 'bg-gradient-dark',
     'classes_auth_header' => '',
-    'classes_auth_body' => '',
-    'classes_auth_footer' => '',
-    'classes_auth_icon' => '',
-    'classes_auth_btn' => 'btn-flat btn-primary',
-
+    'classes_auth_body' => 'bg-gradient-dark',
+    'classes_auth_footer' => 'text-center',
+    'classes_auth_icon' => 'fa-fw text-light',
+    'classes_auth_btn' => 'btn-flat btn-light',
     /*
     |--------------------------------------------------------------------------
     | Admin Panel Classes
@@ -194,8 +192,8 @@ return [
     'classes_content' => '',
     'classes_sidebar' => 'sidebar-dark-primary elevation-4',
     'classes_sidebar_nav' => '',
-    'classes_topnav' => 'navbar-white navbar-light',
-    'classes_topnav_nav' => 'navbar-expand',
+    'classes_topnav' => 'navbar-dark',
+    'classes_topnav_nav' => 'navbar-expand-md',
     'classes_topnav_container' => 'container',
 
     /*
@@ -291,15 +289,12 @@ return [
 
     'menu' => [
         // Navbar items:
+
         [
-            'type'         => 'navbar-search',
-            'text'         => 'search',
-            'topnav_right' => true,
+            'type'         => 'darkmode-widget',
+            'topnav_right' => true, // Or "topnav => true" to place on the left.
         ],
-        [
-            'type'         => 'fullscreen-widget',
-            'topnav_right' => true,
-        ],
+
 
         // Sidebar items:
         [
@@ -315,7 +310,7 @@ return [
         [
             'text'        => 'Sorteios Realizados',
             'url'         => 'sorteio   ',
-            'icon' => 'fas fa-gift',    
+            'icon' => 'fas fa-gift',
         ],
         [
             'text'        => 'Novo Sorteio',
@@ -333,60 +328,60 @@ return [
         //     'url'  => 'admin/participantes',
         //     'icon' => 'fas fa-fw fa-user',
         // ],
-            // [
-            //     'text'    => 'multilevel',
-            //     'icon'    => 'fas fa-fw fa-share',
-            //     'submenu' => [
-            //         [
-            //             'text' => 'level_one',
-            //             'url'  => '#',
-            //         ],
-            //         [
-            //             'text'    => 'level_one',
-            //             'url'     => '#',
-            //             'submenu' => [
-            //                 [
-            //                     'text' => 'level_two',
-            //                     'url'  => '#',
-            //                 ],
-            //                 [
-            //                     'text'    => 'level_two',
-            //                     'url'     => '#',
-            //                     'submenu' => [
-            //                         [
-            //                             'text' => 'level_three',
-            //                             'url'  => '#',
-            //                         ],
-            //                         [
-            //                             'text' => 'level_three',
-            //                             'url'  => '#',
-            //                         ],
-            //                     ],
-            //                 ],
-            //             ],
-            //         ],
-            //         [
-            //             'text' => 'level_one',
-            //             'url'  => '#',
-            //         ],
-            //     ],
-            // ],
-            // ['header' => 'labels'],
-            // [
-            //     'text'       => 'important',
-            //     'icon_color' => 'red',
-            //     'url'        => '#',
-            // ],
-            // [
-            //     'text'       => 'warning',
-            //     'icon_color' => 'yellow',
-            //     'url'        => '#',
-            // ],
-            // [
-            //     'text'       => 'information',
-            //     'icon_color' => 'cyan',
-            //     'url'        => '#',
-            // ],
+        // [
+        //     'text'    => 'multilevel',
+        //     'icon'    => 'fas fa-fw fa-share',
+        //     'submenu' => [
+        //         [
+        //             'text' => 'level_one',
+        //             'url'  => '#',
+        //         ],
+        //         [
+        //             'text'    => 'level_one',
+        //             'url'     => '#',
+        //             'submenu' => [
+        //                 [
+        //                     'text' => 'level_two',
+        //                     'url'  => '#',
+        //                 ],
+        //                 [
+        //                     'text'    => 'level_two',
+        //                     'url'     => '#',
+        //                     'submenu' => [
+        //                         [
+        //                             'text' => 'level_three',
+        //                             'url'  => '#',
+        //                         ],
+        //                         [
+        //                             'text' => 'level_three',
+        //                             'url'  => '#',
+        //                         ],
+        //                     ],
+        //                 ],
+        //             ],
+        //         ],
+        //         [
+        //             'text' => 'level_one',
+        //             'url'  => '#',
+        //         ],
+        //     ],
+        // ],
+        // ['header' => 'labels'],
+        // [
+        //     'text'       => 'important',
+        //     'icon_color' => 'red',
+        //     'url'        => '#',
+        // ],
+        // [
+        //     'text'       => 'warning',
+        //     'icon_color' => 'yellow',
+        //     'url'        => '#',
+        // ],
+        // [
+        //     'text'       => 'information',
+        //     'icon_color' => 'cyan',
+        //     'url'        => '#',
+        // ],
     ],
 
     /*
