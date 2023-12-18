@@ -135,9 +135,15 @@ class SorteioController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($sorteio_id)
     {
-        //
+        $sorteio = Sorteio::where('id',$sorteio_id)->first();
+        $sorteados = Sorteado::where('sorteio_id', $sorteio_id)->get();
+
+        return view('sorteio.show', [
+            'sorteados' => $sorteados,
+            'sorteio' => $sorteio,
+        ]);
     }
 
     /**

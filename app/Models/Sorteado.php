@@ -24,11 +24,11 @@ class Sorteado extends Model
 
     public function amigoSecreto()
     {
-        return $this->belongsTo(Sorteio::class);
+        return $this->belongsTo(Participante::class);
     }
 
     public function participante()
     {
-        return $this->belongsTo(Sorteio::class);
+        return $this->belongsTo(Participante::class);
     }
 }
