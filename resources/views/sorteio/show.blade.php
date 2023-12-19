@@ -9,7 +9,7 @@
 @section('content')
 
 
-    <div class="form-group col-md-6">
+    <div class="form-group ">
         <label for="nome">Nome do sorteio</label>
         <div type="text" class="form-control @error('nome') is-invalid @enderror" id="nome"
             placeholder="Nome do sorteio" name="nome">
@@ -48,7 +48,7 @@
 
 
     </div>
-    <a href="{{ route('sorteio.index') }}" class="btn btn-outline-primary" role="button">
+    <a href="{{ route('sorteio.index') }}" class="btn btn-outline-dark font-weight-bold" role="button">
         Voltar
     </a>
 

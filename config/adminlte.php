@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'title' => 'Amigo oculto',
+    'title' => 'Amigo Secreto',
     'title_prefix' => '',
     'title_postfix' => '',
 

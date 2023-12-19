@@ -80,13 +80,13 @@
         @enderror
 
 
-        <a href="{{ route('sorteio.index') }}" class="btn btn-outline-primary" role="button">
+        <a href="{{ route('sorteio.index') }}" class="btn btn-outline-dark" role="button">
             Voltar
         </a>
 
         <input type="hidden" name="user_id" value="{{$user->id}}" id="user_id" aria-describedby="userHelp">
 
-        <button type="submit" class="btn btn-primary" role="button">Sortear nomes</button>
+        <button type="submit" class="btn btn-dark" role="button">Sortear nomes</button>
     </form>
 
 @stop

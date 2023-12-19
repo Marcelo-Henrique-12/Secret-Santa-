@@ -1,0 +1,111 @@
+.wrapper {
+    width: 100%;
+}
+
+
+
+.login-box,
+.register-box {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    background: rgba(199, 199, 199, 0.2);
+    border-radius: 10%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.login-box,
+.register-box,
+.card,
+.card-header,
+.card-body,
+.card-footer {
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.card {
+    background: transparent !important;
+    border: none !important;
+}
+
+
+.card-header,
+.card-body,
+.card-footer {
+    background: transparent !important;
+    border: none !important;
+}
+
+.card-footer p a,
+.login-logo a,
+.register-logo a {
+    color: rgb(89, 230, 255) !important;
+    text-shadow: 4px 4px 4px rgba(0, 0, 0, 0.8);
+
+}
+
+.banner {
+    background-image: url('../assets/images/loginbackground.avif');
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
+}
+
+.banner-custon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.4) !important;
+    width: 100vw;
+}
+
+
+.card-header h3 {
+    color: aliceblue !important;
+    text-shadow: 4px 4px 4px rgba(0, 0, 0, 0.8);
+    ;
+
+}
+
+.card-body .form-control::placeholder {
+    color: aliceblue !important;
+}
+
+
+.card-body .form-control {
+    background: rgba(199, 199, 199, 0.2);
+    color: aliceblue;
+
+}
+
+
+.card-body .card-body .form-control:focus:not(:placeholder-shown) {
+    background: rgba(199, 199, 199, 0.2) !important;
+    color: aliceblue !important;
+    border: 1px solid rgb(89, 230, 255) !important;
+
+}
+
+.card-body .form-control:hover {
+    background: rgba(199, 199, 199, 0.2);
+    color: aliceblue;
+    border: 2px solid rgb(89, 230, 255);
+}
+
+.card-body .form-control:focus:not(:hover) {
+    background: rgba(199, 199, 199, 0.2) !important;
+    color: aliceblue !important;
+    border: 2px solid rgb(89, 230, 255) !important;
+}
+
+.card-body .input-group-text {
+    background: rgba(199, 199, 199, 0.2);
+}
+
+.card-body .form-control:focus+.input-group .input-group-text {
+    border: 2px solid rgb(89, 230, 255) !important;
+}
+
