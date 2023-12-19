@@ -42,4 +42,15 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+
+    public function participante()
+    {
+        return $this->hasMany(Participante::class);
+    }
+
+    public function sorteio()
+    {
+        return $this->hasMany(Participante::class);
+    }
 }

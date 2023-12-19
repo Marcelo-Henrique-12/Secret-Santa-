@@ -35,6 +35,8 @@
             @enderror
         </div>
 
+        <input type="hidden" name="user_id" value="{{$user->id}}" id="user_id" aria-describedby="userHelp">
+
         <div class="col-12">
             <button class="btn btn-primary" type="submit">Cadastrar participante</button>
         </div>
@@ -48,7 +50,7 @@
 
     <div class="listausuarios">
         <h3>Participantes</h3>
-        <p>Participantes Cadastrados</p>
+        <p>Meus Participantes Cadastrados</p>
         <table class="table">
             <thead>
                 <tr>
@@ -98,7 +100,8 @@
                                     </div>
                                     <div class="modal-footer justify-content-between">
                                         <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-                                        <form method="post" action="{{ route('novoparticipante.destroy', $participante->id) }}">
+                                        <form method="post"
+                                            action="{{ route('novoparticipante.destroy', $participante->id) }}">
                                             @method('delete')
                                             @CSRF
                                             <input type="hidden" name="rota" value="{{ Route::currentRouteName() }}">

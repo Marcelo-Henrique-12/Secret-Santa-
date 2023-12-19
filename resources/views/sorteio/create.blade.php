@@ -17,21 +17,21 @@
 
     <form method="POST" action="{{ route('sorteio.store') }}">
         @csrf
-        <div class="form-group col-md-6">
+        <div class="form-group ">
             <label for="nome">Nome do sorteio</label>
-            <input type="text" class="form-control @error('nome') is-invalid @enderror" id="nome" placeholder="Nome do sorteio"
-                name="nome">
+            <input type="text" class="form-control @error('nome') is-invalid @enderror" id="nome"
+                placeholder="Nome do sorteio" name="nome" value="{{ old('nome') }}">
             <small id="nomeHelp" class="form-text text-muted">Digite o nome do sorteio que será realizado</small>
 
-            @error('nomeSorteio')
+            @error('nome')
                 <div class="text-danger">{{ $message }}</div>
             @enderror
         </div>
 
         <div class="form-group">
             <label for="descricao">Descricao do sorteio</label>
-            <input type="text" class="form-control @error('descricao') is-invalid @enderror" id="descricao" placeholder="Digite uma descricao para o sorteio"
-                name="descricao">
+            <input type="text" class="form-control @error('descricao') is-invalid @enderror" id="descricao"
+                placeholder="Digite uma descricao para o sorteio" name="descricao">
             <small id="descricaoHelp" class="form-text text-muted">Digite o nome do sorteio que será realizado</small>
 
             @error('descricao')
@@ -40,35 +40,52 @@
         </div>
 
 
-
-        <div class="form-group">
-            <label for="participantes">Participantes disponíveis</label>
-            <div class="input-group">
-                <input type="text" class="form-control" id="search" placeholder="Pesquise o nome">
+        @if ($participantes->count() > 0)
+            <div class="form-group">
+                <label for="participantes">Participantes disponíveis</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="search" placeholder="Pesquise o nome">
+                </div>
+                <ul class="list-group" id="participantes-list">
+                    @foreach ($participantes as $participante)
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            {{ $participante->nome }}
+                            <button type="button" class="btn btn-primary btn-sm add-button"
+                                data-participante="{{ $participante->id }}">+</button>
+                        </li>
+                    @endforeach
+                </ul>
             </div>
-            <ul class="list-group" id="participantes-list">
-                @foreach ($participantes as $participante)
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        {{ $participante->nome }}
-                        <button type="button" class="btn btn-primary btn-sm add-button"
-                            data-participante="{{ $participante->id }}">+</button>
-                    </li>
-                @endforeach
-            </ul>
-        </div>
+        @else
+            <div class="alert alert-warning" role="alert" style="margin-right: 10px;">
+                Não há participantes para o sorteio!
+            </div>
+
+        @endif
+
+
 
         <div class="form-group">
             <label for="selected-participantes">Participantes selecionados</label>
             <ul class="list-group" id="selected-participantes">
             </ul>
+            <small id="descricaoHelp" class="form-text text-muted">Participantes selecionados para o sorteio</small>
         </div>
 
         <input type="hidden" name="participantes_selecionados" id="participantes_selecionados">
 
 
+        @error('participantes_selecionados')
+            <div class="text-danger">{{ $message }}</div>
+        @enderror
+
+
         <a href="{{ route('sorteio.index') }}" class="btn btn-outline-primary" role="button">
             Voltar
         </a>
+
+        <input type="hidden" name="user_id" value="{{$user->id}}" id="user_id" aria-describedby="userHelp">
+
         <button type="submit" class="btn btn-primary" role="button">Sortear nomes</button>
     </form>
 

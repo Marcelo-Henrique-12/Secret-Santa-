@@ -11,6 +11,7 @@ use App\Http\Requests\StoreSorteioRequest;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\SorteioEmail;
 use App\Models\Sorteado;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class SorteioController extends Controller
@@ -20,12 +21,15 @@ class SorteioController extends Controller
      */
     public function index()
     {
-        $participantes = Participante::select('id', 'nome', 'email')->get();
-        $sorteados = Sorteado::selectRaw('sorteio_id, COUNT(id) as quantidade')->groupBy('sorteio_id')->get();
+        $user = Auth::user();
+
+        $sorteios = Sorteio::where('user_id', $user->id)->get();
+
+        $participantes = Participante::where('user_id', $user->id)->get();
 
         return view('sorteio.index', [
             'participantes' => $participantes,
-            'sorteados' => $sorteados,
+            'sorteios' => $sorteios,
         ]);
     }
 
@@ -34,6 +38,7 @@ class SorteioController extends Controller
      */
     public function store(StoreSorteioRequest $request)
     {
+        $dados = $request->validated();
         $participantesSelecionados = explode(',', $request->participantes_selecionados);
 
         $participantesSelecionados = Participante::whereIn('id', $participantesSelecionados)->get();
@@ -43,8 +48,8 @@ class SorteioController extends Controller
         }
 
 
-        DB::transaction(function () use ($request, $participantesSelecionados) {
-            $dados = $request->validated();
+        DB::transaction(function () use ($dados, $participantesSelecionados) {
+
             $sorteio = Sorteio::create($dados);
 
             $participantesEmbaralhados = $participantesSelecionados->shuffle();
@@ -94,10 +99,12 @@ class SorteioController extends Controller
 
     public function create()
     {
-        $participantes = Participante::select('id', 'nome', 'email')->get();
+        $user = Auth::user();
+        $participantes = Participante::where('user_id', $user->id)->get();
 
         return view('sorteio.create', [
-            'participantes' => $participantes
+            'participantes' => $participantes,
+            'user' => $user
         ]);
     }
 

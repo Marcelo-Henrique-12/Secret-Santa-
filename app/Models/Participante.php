@@ -10,11 +10,16 @@ class Participante extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['nome', 'email'];
+    protected $fillable = ['nome', 'email','user_id'];
 
     public function sorteado()
     {
         return $this->hasMany(Sorteado::class);
+    }
+
+    public function user()
+    {
+        return $this->hasOne(User::class);
     }
 
 }

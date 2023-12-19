@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreParticipanteRequest;
 use App\Models\Participante;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class NovoParticipanteController extends Controller
 {
@@ -14,16 +15,19 @@ class NovoParticipanteController extends Controller
         $this->middleware('auth');
     }
 
-    
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $participantes = Participante::select('id', 'nome', 'email')->get();
+        $user = Auth::user();
+
+        $participantes = Participante::where('user_id', $user->id)->get();
 
         return view('participantes.cadastro', [
-            'participantes' => $participantes
+            'participantes' => $participantes,
+            'user' => $user
         ]);
     }
 
@@ -32,11 +36,16 @@ class NovoParticipanteController extends Controller
      */
     public function create()
     {
-        $participantes = Participante::select('id', 'nome', 'email')->get();
+
+        $user = Auth::user();
+
+        $participantes = Participante::where('user_id', $user->id)->get();
+
 
 
         return view('participantes.cadastro', [
-            'participantes' => $participantes
+            'participantes' => $participantes,
+            'user' => $user
         ]);
     }
 

@@ -23,7 +23,9 @@ class StoreSorteioRequest extends FormRequest
     {
         return [
             'nome' => 'required|max:30|',
-            'descricao'=> 'max:100'
+            'descricao'=> 'max:100',
+            'participantes_selecionados'=> 'required|min:2',
+            'user_id' => 'required'
         ];
     }
 
@@ -32,7 +34,9 @@ class StoreSorteioRequest extends FormRequest
         return [
             'nome.required' => 'O nome do sorteio é obrigatório',
             'nome.max' => 'Digite no máximo 30 dígitos',
-            'descricao.max'=>'Digite no máximo 100 dígitos'
+            'descricao.max'=>'Digite no máximo 100 dígitos',
+            'participantes_selecionados.required' => 'Selecione os participantes',
+            'participantes_selecionados.min' => 'Mínimo de 2 participantes'
         ];
     }
 }

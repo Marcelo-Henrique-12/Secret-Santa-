@@ -29,19 +29,19 @@
                     <tr>
                         <th scope="col">Id</th>
                         <th scope="col">Nome do Sorteio</th>
-                        <th scope="col">Quantidade de sorteios realizados</th>
+                        <th scope="col">Quantidade de participantes</th>
                         <th scope="col">Ações</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($sorteados as $sorteado)
+                    @foreach ($sorteios as $sorteio)
                         <tr>
-                            <td>{{ $sorteado->sorteio_id }}</td>
-                            <td>{{ $sorteado->sorteio->nome }}</td>
-                            <td>{{ $sorteado->quantidade }}</td>
+                            <td>{{ $sorteio->id }}</td>
+                            <td>{{ $sorteio->nome }}</td>
+                            <td>{{ $sorteio->quantidadeParticipantes() }}</td>
                             <td>
                                 <div class="btn-group" role="group" aria-label="Ações">
-                                    <form method="POST" action="{{ route('sorteio.email', $sorteado->sorteio_id) }}">
+                                    <form method="POST" action="{{ route('sorteio.email', $sorteio->id) }}">
                                         @csrf
                                         <button type="submit" class="btn btn-info" data-toggle="tooltip"
                                             data-placement="top" title="Enviar E-mail">
@@ -51,7 +51,7 @@
                                 </div>
 
                                 <div class="btn-group" role="group" aria-label="Ações">
-                                    <form method="GET" action="{{ route('sorteio.show', $sorteado->sorteio_id) }}">
+                                    <form method="GET" action="{{ route('sorteio.show', $sorteio->id) }}">
                                         @csrf
                                         <button type="submit" class="btn btn-info" data-toggle="tooltip"
                                             data-placement="top" title="Visualizar sorteio" style="margin-left: 5px">
@@ -62,15 +62,15 @@
 
                                 <div class="btn-group" role="group" aria-label="Ações">
                                     <a href="#" type="button" class="btn btn-danger" data-toggle="modal"
-                                        data-target="#modal-default{{ $sorteado->sorteio_id }}" data-placement="top"
-                                        title="Excluir" style="margin-left: 5px">
+                                        data-target="#modal-default{{ $sorteio->id }}" data-placement="top" title="Excluir"
+                                        style="margin-left: 5px">
                                         <i class="fas fa-trash-alt"></i>
                                     </a>
                                 </div>
                             </td>
                         </tr>
                         {{-- DELETE MODAL --}}
-                        <div class="modal fade" id="modal-default{{ $sorteado->sorteio_id }}" style="display: none;"
+                        <div class="modal fade" id="modal-default{{ $sorteio->id }}" style="display: none;"
                             aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
@@ -85,8 +85,7 @@
                                     </div>
                                     <div class="modal-footer justify-content-between">
                                         <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-                                        <form method="post"
-                                            action="{{ route('sorteio.destroy', $sorteado->sorteio_id) }}">
+                                        <form method="post" action="{{ route('sorteio.destroy', $sorteio->id) }}">
                                             @method('delete')
                                             @csrf
                                             <input type="hidden" name="rota" value="{{ Route::currentRouteName() }}">
@@ -115,5 +114,5 @@
 @stop
 
 @section('js')
-    
+
 @stop

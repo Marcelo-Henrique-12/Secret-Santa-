@@ -25,6 +25,7 @@ class StoreParticipanteRequest extends FormRequest
         return [
             'nome' => 'required|max:255|min:3',
             'email' => ['required','nullable', 'max:255', 'min:3', Rule::unique('participantes'), 'regex:/^[a-zA-Z-0-9-@_.-]+@[a-zA-Z.]+$/i'],
+            'user_id'=> 'required'
         ];
     }
 
@@ -33,7 +34,7 @@ class StoreParticipanteRequest extends FormRequest
         return [
             'nome.required' => 'O nome é obrigatório',
             'email.required' => 'O email é obrigatório',
-    
+
         ];
     }
 }

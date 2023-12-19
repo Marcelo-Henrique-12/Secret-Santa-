@@ -13,11 +13,22 @@ class Sorteio extends Model
 
     protected $fillable = [
         'nome',
-        'descricao'
+        'descricao',
+        'user_id'
     ];
 
     public function sorteado()
     {
         return $this->belongsTo(Sorteado::class);
+    }
+
+    public function user()
+    {
+        return $this->hasOne(User::class);
+    }
+
+    public function quantidadeParticipantes()
+    {
+        return Sorteado::where('sorteio_id', $this->id)->count();
     }
 }
