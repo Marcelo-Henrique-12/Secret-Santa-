@@ -1,14 +1,14 @@
 @extends('adminlte::auth.auth-page', ['auth_type' => 'register'])
 
-@php( $login_url = View::getSection('login_url') ?? config('adminlte.login_url', 'login') )
-@php( $register_url = View::getSection('register_url') ?? config('adminlte.register_url', 'register') )
+@php($login_url = View::getSection('login_url') ?? config('adminlte.login_url', 'login'))
+@php($register_url = View::getSection('register_url') ?? config('adminlte.register_url', 'register'))
 
 @if (config('adminlte.use_route_url', false))
-    @php( $login_url = $login_url ? route($login_url) : '' )
-    @php( $register_url = $register_url ? route($register_url) : '' )
+    @php($login_url = $login_url ? route($login_url) : '')
+    @php($register_url = $register_url ? route($register_url) : '')
 @else
-    @php( $login_url = $login_url ? url($login_url) : '' )
-    @php( $register_url = $register_url ? url($register_url) : '' )
+    @php($login_url = $login_url ? url($login_url) : '')
+    @php($register_url = $register_url ? url($register_url) : '')
 @endif
 
 @section('auth_header', __('adminlte::adminlte.register_message'))
@@ -18,15 +18,15 @@
         @csrf
 
         {{-- Name field --}}
-        <div class="input-group mb-3">
+        <div class="mb-3 custom-input">
             <input type="text" name="name" class="form-control @error('name') is-invalid @enderror"
-                   value="{{ old('name') }}" placeholder="{{ __('adminlte::adminlte.full_name') }}" autofocus>
+                value="{{ old('name') }}" placeholder="{{ __('adminlte::adminlte.full_name') }}" autofocus>
 
-            <div class="input-group-append">
-                <div class="input-group-text">
-                    <span class="fas fa-user {{ config('adminlte.classes_auth_icon', '') }}"></span>
-                </div>
+
+            <div class="custon-icon">
+                <span class="fas fa-user {{ config('adminlte.classes_auth_icon', '') }}"></span>
             </div>
+
 
             @error('name')
                 <span class="invalid-feedback" role="alert">
@@ -36,15 +36,15 @@
         </div>
 
         {{-- Email field --}}
-        <div class="input-group mb-3">
+        <div class="mb-3 custom-input">
             <input type="email" name="email" class="form-control @error('email') is-invalid @enderror"
-                   value="{{ old('email') }}" placeholder="{{ __('adminlte::adminlte.email') }}">
+                value="{{ old('email') }}" placeholder="{{ __('adminlte::adminlte.email') }}">
 
-            <div class="input-group-append">
-                <div class="input-group-text">
-                    <span class="fas fa-envelope {{ config('adminlte.classes_auth_icon', '') }}"></span>
-                </div>
+
+            <div class="custon-icon">
+                <span class="fas fa-envelope {{ config('adminlte.classes_auth_icon', '') }}"></span>
             </div>
+
 
             @error('email')
                 <span class="invalid-feedback" role="alert">
@@ -54,15 +54,15 @@
         </div>
 
         {{-- Password field --}}
-        <div class="input-group mb-3">
+        <div class="mb-3 custom-input">
             <input type="password" name="password" class="form-control @error('password') is-invalid @enderror"
-                   placeholder="{{ __('adminlte::adminlte.password') }}">
+                placeholder="{{ __('adminlte::adminlte.password') }}">
 
-            <div class="input-group-append">
-                <div class="input-group-text">
-                    <span class="fas fa-lock {{ config('adminlte.classes_auth_icon', '') }}"></span>
-                </div>
+
+            <div class="custon-icon">
+                <span class="fas fa-lock {{ config('adminlte.classes_auth_icon', '') }}"></span>
             </div>
+
 
             @error('password')
                 <span class="invalid-feedback" role="alert">
@@ -72,16 +72,15 @@
         </div>
 
         {{-- Confirm password field --}}
-        <div class="input-group mb-3">
+        <div class="mb-3 custom-input">
             <input type="password" name="password_confirmation"
-                   class="form-control @error('password_confirmation') is-invalid @enderror"
-                   placeholder="{{ __('adminlte::adminlte.retype_password') }}">
+                class="form-control @error('password_confirmation') is-invalid @enderror"
+                placeholder="{{ __('adminlte::adminlte.retype_password') }}">
 
-            <div class="input-group-append">
-                <div class="input-group-text">
-                    <span class="fas fa-lock {{ config('adminlte.classes_auth_icon', '') }}"></span>
-                </div>
+            <div class="custon-icon">
+                <span class="fas fa-lock {{ config('adminlte.classes_auth_icon', '') }}"></span>
             </div>
+
 
             @error('password_confirmation')
                 <span class="invalid-feedback" role="alert">

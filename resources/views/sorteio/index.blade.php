@@ -110,6 +110,10 @@
         .lista {
             margin-top: 2em;
         }
+        .banner {
+            background-image: none;
+            background-color: #f4f6f9;
+        }
     </style>
 @stop
 

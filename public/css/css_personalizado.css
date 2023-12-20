@@ -1,0 +1,262 @@
+.wrapper {
+    width: 100%;
+}
+
+.login-logo,
+.register-logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-logo img,
+.register-logo img {
+    margin-bottom: 10px;
+
+}
+
+.login-box,
+.register-box {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    background: rgba(199, 199, 199, 0.1);
+    border-radius: 10%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.login-box,
+.register-box,
+.card,
+.card-header,
+.card-body,
+.card-footer {
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.card {
+    background: transparent !important;
+    border: none !important;
+}
+
+
+.card-header,
+.card-body,
+.card-footer {
+    background: transparent !important;
+    border: none !important;
+}
+
+.card-footer p a,
+.login-logo a,
+.register-logo a {
+    color: rgb(89, 230, 255) !important;
+    text-shadow: 4px 4px 4px rgba(0, 0, 0, 0.8);
+
+}
+
+.banner {
+    background-image: url('../assets/images/loginbackground.avif');
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
+}
+
+.banner-custon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.4) !important;
+    width: 100vw;
+}
+
+
+.card-header h3 {
+    color: aliceblue !important;
+    text-shadow: 4px 4px 4px rgba(0, 0, 0, 0.8);
+    ;
+
+}
+
+.card-body .form-control::placeholder {
+    color: aliceblue !important;
+}
+
+
+.card-body .form-control {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(199, 199, 199, 0.2);
+    color: aliceblue;
+    border-radius: 0;
+    /* Remover a borda arredondada, se necessário */
+}
+
+
+
+.card-body .form-control:focus:not(:placeholder-shown) {
+    border-bottom: 2px solid rgb(89, 230, 255) !important;
+}
+
+.card-body .form-control:hover {
+    border-bottom: 2px solid rgb(89, 230, 255);
+}
+
+.card-body .form-control:focus:not(:hover) {
+    color: aliceblue !important;
+    border-bottom: 2px solid rgb(89, 230, 255) !important;
+}
+
+.card-body .input-group-text {
+    background: transparent;
+}
+
+.card-body .form-control:focus+.input-group .input-group-text {
+    border-bottom: 2px solid rgb(89, 230, 255) !important;
+}
+
+.custon-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.card-body .custom-input {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.card-body .custom-input fieldset {
+    border: none;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform-origin: top left;
+    transition: transform 0.3s ease-out;
+}
+
+.card-body .custom-input input {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(199, 199, 199, 0.2);
+    color: aliceblue;
+    border-radius: 0;
+    padding-right: 40px;
+    padding-top: 20px;
+    /* Ajuste conforme necessário para dar espaço ao label */
+}
+
+.card-body .custom-input input:focus:not(:placeholder-shown) {
+    border-bottom: 2px solid rgb(89, 230, 255) !important;
+}
+
+.card-body .custom-input input:hover {
+    border-bottom: 2px solid rgb(89, 230, 255);
+}
+
+.card-body .custom-input .input-group-text {
+    background: transparent;
+}
+
+.card-body .custom-input input:focus+.input-group .input-group-text {
+    border: 2px solid rgb(89, 230, 255) !important;
+}
+
+.card-body .custom-input input:focus+fieldset {
+    transform: translateY(-20px);
+    /* Ajuste conforme necessário para a altura do label */
+}
+
+.custom-sign-in-btn {
+    background-color: rgb(43, 168, 189);
+    border-color: rgb(43, 168, 189);
+    color: aliceblue;
+    font-weight: bold;
+    transition: background-color 0.3s ease-in-out, border-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.custom-sign-in-btn:hover {
+
+    color: aliceblue;
+    font-weight: bold;
+    transform: scale(1.05);
+}
+
+
+/* Tornar a sombra menos perceptível, ajustando a cor para a cor do background */
+.card-body .custom-input input:-webkit-autofill,
+.card-body .custom-input input:-webkit-autofill:hover,
+.card-body .custom-input input:-webkit-autofill:focus,
+.card-body .custom-input input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px rgba(0, 0, 0, 0.4) inset !important;
+    color: #000 !important;
+    font-weight: bold;
+}
+
+
+
+
+
+body:not(.dark-mode) input:-webkit-autofill,
+body:not(.dark-mode) input:-webkit-autofill:hover,
+body:not(.dark-mode) input:-webkit-autofill:focus,
+body:not(.dark-mode) input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px #fff inset !important;
+    color: #000 !important;
+}
+
+/* Modo escuro */
+body.dark-mode input:-webkit-autofill,
+body.dark-mode input:-webkit-autofill:hover,
+body.dark-mode input:-webkit-autofill:focus,
+body.dark-mode input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px #2e3237 inset !important;
+    color: #fff !important;
+}
+
+
+.custon-navbar .navbar-brand {
+    color: rgb(89, 230, 255);
+    text-shadow: 4px 4px 4px rgba(0, 0, 0, 0.8);
+    transition: color 0.3s ease-in-out, transform 0.3s ease-in-out;
+    backface-visibility: hidden;
+}
+
+.custon-navbar .navbar-brand:hover {
+    color: rgb(89, 230, 255) !important;
+    transform: scale(1.02);
+}
+
+.custon-navbar .nav-link{
+    text-shadow: 4px 4px 4px rgba(0, 0, 0, 0.8);
+}
+.custon-navbar .nav-link, .btn-primary {
+    transition: color 0.3s ease-in-out, transform 0.3s ease-in-out;
+    backface-visibility: hidden;
+}
+
+.custon-navbar .nav-link:hover, .btn-primary:hover {
+    transform: scale(1.02);
+}
+
+body:not(.dark-mode) .btn-primary{
+    color: rgb(0, 0, 0) !important;
+    font-weight: bold;
+    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.6);
+    background-color: rgb(89, 230, 255) !important;
+}
+
+body.dark-mode .btn-primary{
+    color: rgb(0, 0, 0) !important;
+    font-weight: bold;
+    box-shadow: 2px 2px 2px rgba(133, 133, 133, 0.6);
+    background-color: rgb(43, 168, 189) !important;
+}
+
+

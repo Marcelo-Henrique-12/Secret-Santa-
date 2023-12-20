@@ -76,12 +76,50 @@
     @endif
 
     <!-- Custom styles -->
-    <link href="{{ asset('css/login_personalizado.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/css_personalizado.css') }}" rel="stylesheet">
 </head>
 
 <body class="@yield('classes_body')" @yield('body_data')>
-    <div class="banner">
-        <div class="banner-custon">
+    @if (request()->route() && (request()->route()->getName() == 'login'
+    || request()->route()->getName() == 'register'
+    || request()->route()->getName() == 'login.home'
+    || strpos(request()->url(), '/password/reset') !== false
+    ))
+
+        <div class="banner">
+            <div class="banner">
+                <div class="banner-custon">
+                    {{-- Body Content --}}
+                    @yield('body')
+
+                    {{-- Base Scripts --}}
+                    @if (!config('adminlte.enabled_laravel_mix'))
+                        <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
+                        <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+                        <script src="{{ asset('vendor/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
+                        <script src="{{ asset('vendor/adminlte/dist/js/adminlte.min.js') }}"></script>
+                    @else
+                        <script src="{{ mix(config('adminlte.laravel_mix_js_path', 'js/app.js')) }}"></script>
+                    @endif
+
+                    {{-- Extra Configured Plugins Scripts --}}
+                    @include('adminlte::plugins', ['type' => 'js'])
+
+                    {{-- Livewire Script --}}
+                    @if (config('adminlte.livewire'))
+                        @if (intval(app()->version()) >= 7)
+                            @livewireScripts
+                        @else
+                            <livewire:scripts />
+                        @endif
+                    @endif
+
+                    {{-- Custom Scripts --}}
+                    @yield('adminlte_js')
+
+                </div>
+            </div>
+        @else
             {{-- Body Content --}}
             @yield('body')
 
@@ -110,9 +148,7 @@
             {{-- Custom Scripts --}}
             @yield('adminlte_js')
 
-        </div>
-    </div>
-
+    @endif
 </body>
 
 
