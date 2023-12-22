@@ -55,12 +55,6 @@
             text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.6);
         }
 
-        img {
-            width: 25%; /* Define a largura da imagem como 100% da largura do contêiner */
-            max-width: 25%; /* Define a largura máxima para garantir que a imagem não ultrapasse o tamanho desejado */
-            height: auto; /* Mantém a proporção da imagem */
-            display: block; /* Remove espaços extras ao redor da imagem */
-            margin: 10px auto; /* Adiciona um pequeno espaçamento ao redor da imagem */
         }
     </style>
 </head>
@@ -73,7 +67,6 @@
         <div class="custon-name">
             <p style="margin: 0; font-size: 20px;">{{ $amigoSecreto->nome }}</p>
         </div>
-        <img src="{{ asset('assets/images/presente(1).png') }}" alt="Presente">
         <p>Esperamos que você faça um ótimo presente para seu amigo secreto!</p>
         <p>Atenciosamente,<br> Seu Sistema Bonitinho</p>
     </div>
