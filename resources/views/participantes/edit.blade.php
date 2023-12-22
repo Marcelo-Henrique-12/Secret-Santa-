@@ -39,7 +39,7 @@
         </div>
 
         <div class="col-12">
-            <button class="btn btn-primary" type="submit">Cadastrar participante</button>
+            <button class="btn btn-primary" type="submit">Atualizar participante</button>
             <a href="{{ route('participante.index') }}" class="btn btn-secondary ">Voltar</a>
         </div>
     </form>
