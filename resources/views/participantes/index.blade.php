@@ -67,7 +67,7 @@
 
 
 
-    <div class="listausuarios">
+    <div class="listausuarios table-responsive">
         <h3>Participantes</h3>
         <p>Meus Participantes Cadastrados</p>
         <table class="table">
@@ -153,8 +153,3 @@
     </style>
 @stop
 
-@section('js')
-    <script>
-        console.log('Hi!');
-    </script>
-@stop

@@ -16,7 +16,7 @@
     @endif
     <form method="post" action="{{ route('novoparticipante.update', ['novoparticipante' => $participante->id]) }}" class="row g-3 needs-validation">
         @csrf
-        @method('PUT') 
+        @method('PUT')
 
         <div class="form-group col-md-6">
             <label for="nome">Nome</label>
@@ -55,8 +55,3 @@
     </style>
 @stop
 
-@section('js')
-    <script>
-        console.log('Hi!');
-    </script>
-@stop
