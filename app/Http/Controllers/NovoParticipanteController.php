@@ -57,7 +57,7 @@ class NovoParticipanteController extends Controller
         $participante = Participante::create($dados);
 
         return redirect()
-            ->route('novoparticipante.index')
+            ->route('novoparticipante.create')
             ->with([
                 'participante' => $participante,
                 'success' => 'Participante cadastrado com sucesso!'
@@ -100,7 +100,7 @@ class NovoParticipanteController extends Controller
         ]);
 
         return redirect()
-            ->route('novoparticipante.create')
+            ->route('novoparticipante.index')
             ->with([
                 'participante' => $participante,
                 'success' => 'Participante atualizado com sucesso!'
