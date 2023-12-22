@@ -317,11 +317,17 @@ return [
             'url'         => 'sorteio/create',
             'icon'        => 'fas fa-ticket-alt',
         ],
-        ['header' => 'Cadastro de participantes'],
+        ['header' => 'Participantes'],
         [
-            'text' => 'Novo participante',
+            'text' => 'Participantes',
             'url'  => 'novoparticipante',
-            'icon' => 'fas fa-fw fa-plus',
+            'icon' => 'fas fa-users',
+        ],
+        ['header' => 'Cadastrar Participantes'],
+        [
+            'text' => 'Cadastrar Participantes',
+            'url'  => 'novoparticipante/create',
+            'icon' => 'fas fa-plus',
         ],
         // [
         //     'text' => 'Participantes cadastrados',

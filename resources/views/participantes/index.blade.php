@@ -1,50 +1,69 @@
 @extends('adminlte::page')
 
-@section('title', 'Cadastro de participantes')
+@section('title', 'Participantes')
 
 @section('content_header')
     <h1>Cadastro</h1>
 @stop
 
 @section('content')
-    <p>Cadastre um novo participante.</p>
-    @if (Session::has('success'))
-        <div class="alert alert-success">
-            {{ Session::get('success') }}
-        </div>
-    @endif
-    <form method="post" action="{{ route('novoparticipante.store') }}" class="row g-3 needs-validation">
-        @csrf
-        <div class="form-group col-md-6">
-            <label for="nome">Nome</label>
-            <input type="text" class="form-control @error('nome') is-invalid @enderror" id="nome"
-                placeholder="Ex.: José da Silva Ribeiro" name="nome">
-            <small id="nomeHelp" class="form-text text-muted">Nome Completo</small>
+    <div class="card card-secondary mb-5">
+        <p>Cadastre um novo participante.</p>
+        @if (Session::has('success'))
+            <div class="alert alert-success">
+                {{ Session::get('success') }}
+            </div>
+        @endif
 
-            @error('nome')
-                <div class="text-danger">{{ $message }}</div>
-            @enderror
-        </div>
-
-        <div class="form-group col">
-            <label for="email">E-mail</label>
-            <input type="email" name="email" class="form-control" id="email" aria-describedby="emailHelp"
-                placeholder="Ex.: example@email.com">
-            @error('email')
-                <div class="text-danger">{{ $message }}</div>
-            @enderror
-        </div>
-
-        <input type="hidden" name="user_id" value="{{$user->id}}" id="user_id" aria-describedby="userHelp">
 
         <div class="col-12">
-            <button class="btn btn-primary" type="submit">Cadastrar participante</button>
+            <a href="{{ route('novoparticipante.create') }}" class="btn btn-primary" type="submit"><i class="fas fa-plus"></i>
+                Cadastrar
+                participante</a>
         </div>
-    </form>
 
+    </div>
+
+    <!-- Início Pesquisa -->
+    <div class="card card-secondary">
+
+            <h3 >Pesquisar</h3>
+
+        <form id="search-form" action="{{ route('novoparticipante.index') }}">
+
+
+            <div class="row">
+
+                <div class="col-md-6 form-group">
+                    <label for="nome">Nome do Participante</label>
+                    <input type="search" class="form-control" id="textfield1" name="nome"
+                        value="{{ request()->nome ?? '' }}" placeholder="Nome do Participante">
+                </div>
+                <div class="col-md-6 form-group">
+                    <label for="status_participante">Status do Participante</label>
+                    <select class="form-control" id="status_participante" name="status_participante">
+                        <option value="">-- Selecione --</option>
+                        <option value="ATIVO" {{ (request()->status_participante === 'ATIVO') ? 'selected' : '' }}>Ativo</option>
+                        <option value="INATIVO" {{ (request()->status_participante === 'INATIVO') ? 'selected' : '' }}>Inativo</option>
+                    </select>
+                </div>
+
+
+
+
+            </div>
+
+            <div class="card-footer">
+                <div class="d-flex justify-content-end gap-3">
+                    <a class="btn btn-outline-danger float-right" href="{{ route('novoparticipante.index') }}"
+                        style="margin-right: 10px;"><i class="fas fa-times"></i> Limpar Campos</a>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i>Pesquisar</button>
+                </div>
+            </div>
+        </form>
+    </div>
 
     {{-- LISTAGEM DE PARTICIPANTES --}}
-
 
 
 
@@ -57,6 +76,7 @@
                     <th scope="col">#</th>
                     <th scope="col">Nome</th>
                     <th scope="col">email</th>
+                    <th scope="col">status</th>
                     <th scope="col">Ações</th>
                 </tr>
             </thead>
@@ -66,6 +86,7 @@
                         <th scope="row">{{ $participante->id }}</th>
                         <td>{{ $participante->nome }}</td>
                         <td>{{ $participante->email }}</td>
+                        <td>{{ $participante->status_participante }}</td>
                         <td>
                             <div class="btn-group">
                                 <a href="{{ route('novoparticipante.edit', $participante->id) }}" type="button"
@@ -76,8 +97,8 @@
                             <div class="btn-group">
 
                                 <a href="#" type="button" class="btn btn-danger" data-toggle="modal"
-                                    data-target="#modal-default{{ $participante->id }}" title="Excluir">
-                                    <i class="fas fa-trash-alt"></i>
+                                    data-target="#modal-default{{ $participante->id }}" title="Desativar">
+                                    <i class="fas fa-ban"></i>
                                 </a>
 
                             </div>
@@ -89,14 +110,14 @@
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h4 class="modal-title">Excluir participante</h4>
+                                        <h4 class="modal-title">Desativar participante</h4>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">×</span>
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <p>Caso prossiga com a exclusão do item, o mesmo não será mais recuperado. Deseja
-                                            realmente excluir?</p>
+                                        <p>O participante será desativado, e o mesmo não aparecerá em nenhum novo sorteio.
+                                            Deseja mesmo desativa-lo</p>
                                     </div>
                                     <div class="modal-footer justify-content-between">
                                         <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
@@ -105,7 +126,7 @@
                                             @method('delete')
                                             @CSRF
                                             <input type="hidden" name="rota" value="{{ Route::currentRouteName() }}">
-                                            <button type="submit" class="btn btn-danger">Excluir</button>
+                                            <button type="submit" class="btn btn-danger">Desativar</button>
                                         </form>
                                     </div>
                                 </div>

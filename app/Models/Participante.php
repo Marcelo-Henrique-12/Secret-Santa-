@@ -10,7 +10,7 @@ class Participante extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['nome', 'email','user_id'];
+    protected $fillable = ['nome', 'email','user_id','status_participante'];
 
     public function sorteado()
     {
@@ -21,5 +21,16 @@ class Participante extends Model
     {
         return $this->hasOne(User::class);
     }
+
+    public function scopeSearch($query, $request)
+    {
+
+        return $query->when($request->nome, function ($query, $nome) {
+                return $query->where('nome', 'like', '%' . $nome . '%');
+            })->when($request->status_participante , function ($query, $status_participante) {
+                return $query->where('status_participante', $status_participante);
+            });
+        }
+
 
 }

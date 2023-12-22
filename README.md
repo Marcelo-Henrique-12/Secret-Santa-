@@ -1,4 +1,81 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<!-- Sobre o Sistema -->
+
+Um sistema simples para o cadastro de participantes e sorteio deles para o amigo secreto, com o nome sorteado sendo enviado para o email de cada participante!
+
+O Sistema foi desenvolvido na versão 8.1 do PHP e 10.32.1 do framework Laravel,utilizando do adminlte na versão 3.9 e laravel UI na versão 4.2, além do bootstrap 4.
+
+O banco de dados utilizado foi o MySQL Server 8.2.
+
+<!-- Configurações do sistema -->
+
+Após clonar o repositório, seguir os seguintes passos:
+
+1- No terminal, navegue até a pasta do projeto e de os seguintes comandos?:
+
+ # Configurações das dependências e do .env
+    -cp .env.example .env
+    -composer install
+    -php artisan key:generate
+
+2- Após isso, mude o nome do env para .env, e configure os campos abaixo:
+
+# Crie o Banco de dados e o configure no .env:
+        DB_CONNECTION=mysql
+        DB_HOST=127.0.0.1
+        DB_PORT=3306
+        DB_DATABASE=secretsanta
+        DB_USERNAME=root
+        DB_PASSWORD=root
+
+# Configurações de Email (SMTP)
+        MAIL_MAILER=smtp
+        MAIL_HOST=127.0.0.1
+        MAIL_PORT=1025
+        MAIL_USERNAME=null
+        MAIL_PASSWORD=null
+        MAIL_ENCRYPTION=null
+        MAIL_FROM_ADDRESS=naoresponda@unimontes.br
+        MAIL_FROM_NAME="${APP_NAME}"
+
+
+
+3- Rode as migrations e seeds: 
+
+php artisan migrate:fresh --seed
+
+
+<!-- Como usar o sistema -->
+
+
+# No terminal, após as configurações, vá até a pasta do projeto e de o comando:
+
+php artisan serve
+
+observação: O link para acesso deverá ser configurado no .env, no campo APP_URL, por padrão será http://localhost
+
+# Abra o link que aparecer, e em seguida registre-se e faça o login!
+
+# No sistema, cada usuário poderá cadastrar os seus participantes, e coloca-los para o sorteio!
+
+# Quando sorteados, o sistema irá embaralhar os nomes, e sortea-los de modo que a mesma pessoa não saia duas vezes nem tire a si mesma
+
+# Cadastre o nome do participante e o seu email, pois o amigo secreto dos participantes será enviado por e-mail!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- About Laravel -->
+<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p> -->
 
 <p align="center">
 <a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>

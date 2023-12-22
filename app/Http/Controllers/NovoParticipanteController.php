@@ -19,13 +19,13 @@ class NovoParticipanteController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
 
-        $participantes = Participante::where('user_id', $user->id)->get();
+        $participantes = Participante::search($request)->where('user_id', $user->id)->get();
 
-        return view('participantes.cadastro', [
+        return view('participantes.index', [
             'participantes' => $participantes,
             'user' => $user
         ]);
@@ -39,12 +39,7 @@ class NovoParticipanteController extends Controller
 
         $user = Auth::user();
 
-        $participantes = Participante::where('user_id', $user->id)->get();
-
-
-
-        return view('participantes.cadastro', [
-            'participantes' => $participantes,
+        return view('participantes.create', [
             'user' => $user
         ]);
     }
@@ -55,15 +50,19 @@ class NovoParticipanteController extends Controller
 
     public function store(StoreParticipanteRequest $request)
     {
-        $participante = Participante::create($request->validated());
+        $dados = $request->validated();
+
+        $dados['ativo'] = 'ATIVO';
+
+        $participante = Participante::create($dados);
 
         return redirect()
-            ->route('novoparticipante.create')
+            ->route('novoparticipante.index')
             ->with([
                 'participante' => $participante,
                 'success' => 'Participante cadastrado com sucesso!'
             ])
-            ->withInput(); // Adiciona os dados antigos à sessão
+            ->withInput();
     }
 
     /**
@@ -115,8 +114,8 @@ class NovoParticipanteController extends Controller
     public function destroy(string $id)
     {
         $participante = Participante::findOrFail($id);
-        $participante->delete();
+        $participante->update(['status_participante' => 'INATIVO']);
 
-        return redirect()->route('novoparticipante.create')->with('success', 'Participante excluído com sucesso!');
+        return redirect()->route('novoparticipante.index')->with('success', 'Participante desativado com sucesso!');
     }
 }

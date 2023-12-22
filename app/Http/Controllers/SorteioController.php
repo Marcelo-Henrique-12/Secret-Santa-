@@ -100,7 +100,7 @@ class SorteioController extends Controller
     public function create()
     {
         $user = Auth::user();
-        $participantes = Participante::where('user_id', $user->id)->get();
+        $participantes = Participante::where('user_id', $user->id)->where('status_participante','ATIVO')->get();
 
         return view('sorteio.create', [
             'participantes' => $participantes,
