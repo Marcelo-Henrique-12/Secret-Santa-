@@ -17,7 +17,7 @@
 
 
         <div class="col-12">
-            <a href="{{ route('novoparticipante.create') }}" class="btn btn-primary" type="submit"><i class="fas fa-plus"></i>
+            <a href="{{ route('participante.create') }}" class="btn btn-primary" type="submit"><i class="fas fa-plus"></i>
                 Cadastrar
                 participante</a>
         </div>
@@ -27,9 +27,9 @@
     <!-- Início Pesquisa -->
     <div class="card card-secondary">
 
-            <h3 >Pesquisar</h3>
+        <h3>Pesquisar</h3>
 
-        <form id="search-form" action="{{ route('novoparticipante.index') }}">
+        <form id="search-form" action="{{ route('participante.index') }}">
 
 
             <div class="row">
@@ -43,8 +43,10 @@
                     <label for="status_participante">Status do Participante</label>
                     <select class="form-control" id="status_participante" name="status_participante">
                         <option value="">-- Selecione --</option>
-                        <option value="ATIVO" {{ (request()->status_participante === 'ATIVO') ? 'selected' : '' }}>Ativo</option>
-                        <option value="INATIVO" {{ (request()->status_participante === 'INATIVO') ? 'selected' : '' }}>Inativo</option>
+                        <option value="ATIVO" {{ request()->status_participante === 'ATIVO' ? 'selected' : '' }}>Ativo
+                        </option>
+                        <option value="INATIVO" {{ request()->status_participante === 'INATIVO' ? 'selected' : '' }}>
+                            Inativo</option>
                     </select>
                 </div>
 
@@ -55,7 +57,7 @@
 
             <div class="card-footer">
                 <div class="d-flex justify-content-end gap-3">
-                    <a class="btn btn-outline-danger float-right" href="{{ route('novoparticipante.index') }}"
+                    <a class="btn btn-outline-danger float-right" href="{{ route('participante.index') }}"
                         style="margin-right: 10px;"><i class="fas fa-times"></i> Limpar Campos</a>
                     <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i>Pesquisar</button>
                 </div>
@@ -89,18 +91,23 @@
                         <td>{{ $participante->status_participante }}</td>
                         <td>
                             <div class="btn-group">
-                                <a href="{{ route('novoparticipante.edit', $participante->id) }}" type="button"
+                                <a href="{{ route('participante.edit', $participante->id) }}" type="button"
                                     class="btn btn-info" title="Editar">
                                     <i class="fas fa-edit"></i>
                                 </a>
                             </div>
                             <div class="btn-group">
+                                @if ($participante->status_participante === 'ATIVO')
+                                    <a href="#" type="button" class="btn btn-danger" data-toggle="modal"
+                                        data-target="#modal-default{{ $participante->id }}" title="Desativar">
+                                        <i class="fas fa-ban"></i>
+                                    </a>
+                                @elseif ($participante->status_participante === 'INATIVO')
 
-                                <a href="#" type="button" class="btn btn-danger" data-toggle="modal"
-                                    data-target="#modal-default{{ $participante->id }}" title="Desativar">
-                                    <i class="fas fa-ban"></i>
-                                </a>
-
+                                    <a href="{{ route('participante.reativar', $participante->id) }}" type="button" class="btn btn-success" title="Reativar">
+                                        <i class="fas fa-check"></i>
+                                    </a>
+                                @endif
                             </div>
                         </td>
 
@@ -117,12 +124,12 @@
                                     </div>
                                     <div class="modal-body">
                                         <p>O participante será desativado, e o mesmo não aparecerá em nenhum novo sorteio.
-                                            Deseja mesmo desativa-lo</p>
+                                            Deseja mesmo desativá-lo ?</p>
                                     </div>
                                     <div class="modal-footer justify-content-between">
                                         <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
                                         <form method="post"
-                                            action="{{ route('novoparticipante.destroy', $participante->id) }}">
+                                            action="{{ route('participante.desativar', $participante->id) }}">
                                             @method('delete')
                                             @CSRF
                                             <input type="hidden" name="rota" value="{{ Route::currentRouteName() }}">
@@ -152,4 +159,3 @@
         }
     </style>
 @stop
-

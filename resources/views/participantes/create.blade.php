@@ -13,7 +13,7 @@
             {{ Session::get('success') }}
         </div>
     @endif
-    <form method="post" action="{{ route('novoparticipante.store') }}" class="row g-3 needs-validation">
+    <form method="post" action="{{ route('participante.store') }}" class="row g-3 needs-validation">
         @csrf
         <div class="form-group col-md-6">
             <label for="nome">Nome</label>
@@ -40,7 +40,7 @@
 
 
         <div class="col-12">
-            <a href="{{ route('novoparticipante.index') }}" class="btn btn-primary" role="button">
+            <a href="{{ route('participante.index') }}" class="btn btn-primary" role="button">
                 Voltar
             </a>
             <button class="btn btn-primary" type="submit">Cadastrar participante</button>

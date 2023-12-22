@@ -14,7 +14,7 @@
             {{ Session::get('success') }}
         </div>
     @endif
-    <form method="post" action="{{ route('novoparticipante.update', ['novoparticipante' => $participante->id]) }}" class="row g-3 needs-validation">
+    <form method="post" action="{{ route('participante.update', ['participante' => $participante->id]) }}" class="row g-3 needs-validation">
         @csrf
         @method('PUT')
 
@@ -40,7 +40,7 @@
 
         <div class="col-12">
             <button class="btn btn-primary" type="submit">Cadastrar participante</button>
-            <a href="{{ route('novoparticipante.index') }}" class="btn btn-secondary ">Voltar</a>
+            <a href="{{ route('participante.index') }}" class="btn btn-secondary ">Voltar</a>
         </div>
     </form>
 

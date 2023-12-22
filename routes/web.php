@@ -1,8 +1,9 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\NovoParticipanteController;
+use App\Http\Controllers\ParticipanteController;
 use App\Http\Controllers\SorteioController;
+use App\Models\Participante;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -26,6 +27,8 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 // Cadastro de participantes
 
 
-Route::resource('novoparticipante', NovoParticipanteController::class);
+Route::resource('participante', ParticipanteController::class);
+Route::delete('participante/desativar/{id}',[ParticipanteController::class, 'desativar'])->name('participante.desativar');
+Route::get('participante/reativar/{id}',[ParticipanteController::class, 'reativar'])->name('participante.reativar');
 Route::resource('sorteio', SorteioController::class);
 Route::post('/sorteioemail/{id}', [SorteioController::class, 'mailto'])->name('sorteio.email');

@@ -7,7 +7,7 @@ use App\Models\Participante;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class NovoParticipanteController extends Controller
+class ParticipanteController extends Controller
 {
 
     public function __construct()
@@ -57,7 +57,7 @@ class NovoParticipanteController extends Controller
         $participante = Participante::create($dados);
 
         return redirect()
-            ->route('novoparticipante.create')
+            ->route('participante.create')
             ->with([
                 'participante' => $participante,
                 'success' => 'Participante cadastrado com sucesso!'
@@ -100,7 +100,7 @@ class NovoParticipanteController extends Controller
         ]);
 
         return redirect()
-            ->route('novoparticipante.index')
+            ->route('participante.index')
             ->with([
                 'participante' => $participante,
                 'success' => 'Participante atualizado com sucesso!'
@@ -113,9 +113,21 @@ class NovoParticipanteController extends Controller
      */
     public function destroy(string $id)
     {
+    }
+
+    public function desativar(string $id)
+    {
         $participante = Participante::findOrFail($id);
         $participante->update(['status_participante' => 'INATIVO']);
 
-        return redirect()->route('novoparticipante.index')->with('success', 'Participante desativado com sucesso!');
+        return redirect()->route('participante.index')->with('success', 'Participante desativado com sucesso!');
+    }
+
+    public function reativar(string $id)
+    {
+        $participante = Participante::findOrFail($id);
+        $participante->update(['status_participante' => 'ATIVO']);
+
+        return redirect()->route('participante.index')->with('success', 'Participante ativado com sucesso!');
     }
 }

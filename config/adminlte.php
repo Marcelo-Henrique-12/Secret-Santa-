@@ -320,13 +320,13 @@ return [
         ['header' => 'Participantes'],
         [
             'text' => 'Participantes',
-            'url'  => 'novoparticipante',
+            'url'  => 'participante',
             'icon' => 'fas fa-users',
         ],
         ['header' => 'Cadastrar Participantes'],
         [
             'text' => 'Cadastrar Participantes',
-            'url'  => 'novoparticipante/create',
+            'url'  => 'participante/create',
             'icon' => 'fas fa-plus',
         ],
         // [
